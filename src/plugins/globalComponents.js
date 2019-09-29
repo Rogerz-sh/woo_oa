@@ -1,18 +1,8 @@
-import { ValidationProvider, ValidationObserver, extend } from 'vee-validate'
-
-extend('username', {
-  validate: value => {
-    if (!!value == false) {
-      return '用户名不能为空';
-    }
-    return true;
-  }
-})
+import Validation from './validation'
 
 const GlobalComponents = {
   install(Vue) {
-    Vue.component('ValidationProvider', ValidationProvider);
-    Vue.component('ValidationObserver', ValidationObserver);
+    Vue.use(Validation)
   }
 };
 

@@ -8,7 +8,7 @@
                         <ValidationProvider rules="username" v-slot="props" :skip-if-empty="false">
                             <label class="label">用户名</label>
                             <div class="control has-icons-left">
-                                <input class="input" :class="{'is-danger': props.invalid}" type="text" placeholder="Text input" v-model="msg.name" />
+                                <input class="input" :class="{'is-danger': props.invalid && props.dirty}" type="text" placeholder="请输入用户名" v-model="account.name" />
                                 <span class="icon is-small is-left">
                                     <i class="fa fa-user"></i>
                                 </span>
@@ -17,19 +17,21 @@
                         </ValidationProvider>
                     </div>
                     <div class="field">
-                        <label class="label">密码</label>
-                        <div class="control has-icons-left">
-                            <input class="input" type="password" placeholder="Text input" value="bulma" />
-                            <span class="icon is-small is-left">
-                                <i class="fa fa-lock"></i>
-                            </span>
-                        </div>
-                        <p class="help" v-text="msg.password" v-show="msg.password"></p>
+                        <ValidationProvider rules="password" v-slot="props" :skip-if-empty="false">
+                            <label class="label">密码</label>
+                            <div class="control has-icons-left">
+                                <input class="input" :class="{'is-danger': props.invalid && props.dirty}" type="password" placeholder="请输入密码" v-model="account.password" />
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-lock"></i>
+                                </span>
+                            </div>
+                            <p class="help" :class="{'is-danger': props.invalid}" v-text="props.errors[0]" v-show="props.dirty"></p>
+                        </ValidationProvider>
                     </div>
                     <div class="field">
                         <div class="control">
                             <label class="checkbox">
-                                <input type="checkbox" /> 记住用户名
+                                <input type="checkbox" v-model="account.remember" /> 记住用户名
                             </label>
                         </div>
                     </div>
@@ -47,15 +49,17 @@ export default {
     name: "Login",
     data: function() {
         return {
-            msg: {
+            account: {
                 name: "",
-                password: ""
+                password: "",
+                remember: true
             }
         };
     },
     methods: {
         doLogin: function (invalid) {
             if (!invalid) alert('aaa');
+            this.$router.push('/resume');
         }
     }
 };
