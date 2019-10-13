@@ -8,24 +8,46 @@
                         <ValidationProvider rules="username" v-slot="props" :skip-if-empty="false">
                             <label class="label">用户名</label>
                             <div class="control has-icons-left">
-                                <input class="input" :class="{'is-danger': props.invalid && props.dirty}" type="text" placeholder="请输入用户名" v-model="account.name" />
+                                <input
+                                    class="input"
+                                    :class="{'is-danger': props.invalid && props.dirty}"
+                                    type="text"
+                                    placeholder="请输入用户名"
+                                    v-model="account.name"
+                                />
                                 <span class="icon is-small is-left">
                                     <i class="fa fa-user"></i>
                                 </span>
                             </div>
-                            <p class="help" :class="{'is-danger': props.invalid}" v-text="props.errors[0]" v-show="props.dirty"></p>
+                            <p
+                                class="help"
+                                :class="{'is-danger': props.invalid}"
+                                v-text="props.errors[0]"
+                                v-show="props.dirty"
+                            ></p>
                         </ValidationProvider>
                     </div>
                     <div class="field">
                         <ValidationProvider rules="password" v-slot="props" :skip-if-empty="false">
                             <label class="label">密码</label>
                             <div class="control has-icons-left">
-                                <input class="input" :class="{'is-danger': props.invalid && props.dirty}" type="password" placeholder="请输入密码" v-model="account.password" />
+                                <input
+                                    class="input"
+                                    :class="{'is-danger': props.invalid && props.dirty}"
+                                    type="password"
+                                    placeholder="请输入密码"
+                                    v-model="account.password"
+                                />
                                 <span class="icon is-small is-left">
                                     <i class="fa fa-lock"></i>
                                 </span>
                             </div>
-                            <p class="help" :class="{'is-danger': props.invalid}" v-text="props.errors[0]" v-show="props.dirty"></p>
+                            <p
+                                class="help"
+                                :class="{'is-danger': props.invalid}"
+                                v-text="props.errors[0]"
+                                v-show="props.dirty"
+                            ></p>
                         </ValidationProvider>
                     </div>
                     <div class="field">
@@ -36,7 +58,11 @@
                         </div>
                     </div>
                     <div class="field">
-                        <a class="button is-success is-fullwidth" :disabled="invalid" @click="doLogin(invalid)">登录</a>
+                        <a
+                            class="button is-success is-fullwidth"
+                            :disabled="invalid"
+                            @click="doLogin(invalid)"
+                        >登录</a>
                     </div>
                 </div>
             </ValidationObserver>
@@ -57,9 +83,11 @@ export default {
         };
     },
     methods: {
-        doLogin: function (invalid) {
-            if (!invalid) alert('aaa');
-            this.$router.push('/resume');
+        doLogin: function(invalid) {
+            if (!invalid) {
+                sessionStorage.setItem('token', 'abc');
+                this.$router.push("/resume");
+            }
         }
     }
 };

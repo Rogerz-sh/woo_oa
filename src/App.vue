@@ -5,18 +5,29 @@
 </template>
 
 <script>
-
 export default {
-  name: 'app',
-  components: {
-    
+  name: "app",
+  components: {},
+  watch: {
+    '$route': function (to, from) {
+      this.auth();
+    }
+  },
+  created: function () {
+    var self = this;
+    if (true) {
+      self.$nextTick().then(() => {
+        self.auth()
+      })
+    }
   }
-}
+};
 </script>
 
 <style>
-html, body {
-  font-family: '微软雅黑';
+html,
+body {
+  font-family: "微软雅黑";
   height: 100%;
   /* font-size: 12px; */
 }
