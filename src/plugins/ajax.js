@@ -13,6 +13,11 @@ export default {
                 return resp;
             }
         });
+        ajax.interceptors.request.use((config) => {
+            config.headers.post['oa-auth-token'] = sessionStorage.getItem('token') || '';
+            // config.withCredentials = true;
+            return config;
+        });
         Vue.prototype.$http = ajax;
     }
 }

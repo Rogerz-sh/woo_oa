@@ -20,10 +20,9 @@ async function findUser() {
 }
 
 async function execQuery() {
-    await User.update({username: 'roger.zhang@giewoo.com'}, {
+    return await User.findOne({
         where: {
-            id: 1
+            username: 'rogers'
         }
     });
-    return await User.findOne();
 }

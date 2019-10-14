@@ -1,37 +1,35 @@
 <template>
-  <div id="app">
-    <router-view></router-view>
-  </div>
+    <div id="app">
+        <router-view></router-view>
+    </div>
 </template>
 
 <script>
 export default {
-  name: "app",
-  components: {},
-  watch: {
-    '$route': function (to, from) {
-      this.auth();
+    name: "app",
+    components: {},
+    watch: {
+        $route: function() {
+            this.auth();
+        }
+    },
+    created: function() {
+        var self = this;
+        self.$nextTick(function() {
+            self.auth();
+        });
     }
-  },
-  created: function () {
-    var self = this;
-    if (true) {
-      self.$nextTick().then(() => {
-        self.auth()
-      })
-    }
-  }
 };
 </script>
 
 <style>
 html,
 body {
-  font-family: "微软雅黑";
-  height: 100%;
-  /* font-size: 12px; */
+    font-family: "微软雅黑";
+    height: 100%;
+    /* font-size: 12px; */
 }
 #app {
-  height: 100%;
+    height: 100%;
 }
 </style>

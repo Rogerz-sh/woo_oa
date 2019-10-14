@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var fs = require('fs');
 
-// var pageRouter = require('./routes/page');
+var router_account = require('./routes/account');
 
 var app = express();
 
@@ -38,6 +38,18 @@ app.use(function (req, res, next) {
   });
   next();
 });
+
+app.use(function (req, res, next) {
+  res.set({
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,POST",
+      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, oa-auth-token",
+      "Access-Control-Allow-Credentials": 'true'
+  });
+  next();
+});
+
+app.use('/api/account', router_account);
 
 app.get('/', (req, res) => {
     var html = fs.readFileSync(path.resolve(__dirname, './dist/index.html'), 'utf-8');
