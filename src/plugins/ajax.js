@@ -8,13 +8,20 @@ export default {
         });
         ajax.interceptors.response.use((resp) => {
             if (resp.status === 200) {
-                return resp.data       //到时候请求的时候，直接拿到data(不含status那些)
+                if (resp.data.code == 401) {
+                    sessionStorage.removeItem('uid');
+                    sessionStorage.removeItem('token');
+                    alert('请求未授权或登录已超时');
+                    location.href = '/';
+                }
+                return resp.data;
             } else {
                 return resp;
             }
         });
         ajax.interceptors.request.use((config) => {
-            config.headers.post['oa-auth-token'] = sessionStorage.getItem('token') || '';
+            config.headers.common['oa-auth-uid'] = sessionStorage.getItem('uid') || '';
+            config.headers.common['oa-auth-token'] = sessionStorage.getItem('token') || '';
             // config.withCredentials = true;
             return config;
         });

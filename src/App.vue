@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+        <nav-bar></nav-bar>
         <router-view></router-view>
     </div>
 </template>
@@ -31,5 +32,10 @@ body {
 }
 #app {
     height: 100%;
+}
+#sideBar {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 </style>

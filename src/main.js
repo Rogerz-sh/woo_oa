@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
-import VueRouter from "vue-router"
+import VueRouter from 'vue-router'
+import Vuex from 'vuex'
 
 Vue.config.productionTip = false
 import ajax from './plugins/ajax'   // 引用axios并绑定到Vue.prototype.$http上
@@ -12,8 +13,20 @@ Vue.use(VueRouter)
 Vue.use(ajax)
 Vue.use(globalComponents)
 Vue.use(session)
+Vue.use(Vuex)
+const store = new Vuex.Store({
+  state: {
+    menus: []
+  },
+  mutations: {
+    loadMenu(state, data) {
+      state.menus = data.menus
+    }
+  }
+});
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount('#app')

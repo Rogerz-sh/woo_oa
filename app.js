@@ -7,6 +7,7 @@ var logger = require('morgan');
 var fs = require('fs');
 
 var router_account = require('./routes/account');
+var router_common = require('./routes/common');
 
 var app = express();
 
@@ -34,22 +35,15 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use(function (req, res, next) {
   res.set({
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,POST"
-  });
-  next();
-});
-
-app.use(function (req, res, next) {
-  res.set({
-      "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET,POST",
-      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, oa-auth-token",
+      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, oa-auth-token, oa-auth-uid",
       "Access-Control-Allow-Credentials": 'true'
   });
   next();
 });
 
 app.use('/api/account', router_account);
+app.use('/api/common', router_common);
 
 app.get('/', (req, res) => {
     var html = fs.readFileSync(path.resolve(__dirname, './dist/index.html'), 'utf-8');
