@@ -1,5 +1,6 @@
 <template>
     <div>
+        <nav-bar></nav-bar>
         <side-bar>
             <menu-list></menu-list>
         </side-bar>
@@ -19,6 +20,7 @@ export default {
         var self = this;
         this.$http.get('/api/common/json-menu-list').then(res => {
             self.$store.commit('loadMenu', res.results);
+            self.$store.commit('activeMenu', {id: 1});
         })
     }
 };

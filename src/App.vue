@@ -1,6 +1,5 @@
 <template>
     <div id="app">
-        <nav-bar></nav-bar>
         <router-view></router-view>
     </div>
 </template>
@@ -14,7 +13,10 @@ export default {
             this.auth();
         }
     },
-    created: function() {
+    computed: {
+
+    },
+    mounted: function() {
         var self = this;
         self.$nextTick(function() {
             self.auth();

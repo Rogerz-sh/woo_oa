@@ -1,22 +1,25 @@
 <template>
     <div id="menu" class="menu">
-        <template v-for="(menu, index) in storeMenus">
-            <p class="menu-label" :key="index" v-text="menu.name">常规分类</p>
-            <ul class="menu-list" :key="index">
-                <li v-for="item in menu.items" :key="item.url">
-                    <a :href="item.url" v-text="item.text">人才库</a>
+        <div v-for="(menu, index) in storeMenus" :key="index">
+            <p class="menu-label" v-text="menu.name">常规分类</p>
+            <ul class="menu-list">
+                <li v-for="item in menu.items" :key="item.id">
+                    <router-link :class="{'is-active': $store.state.activeMenuId == item.id}" :to="item.url" v-text="item.text">人才库</router-link>
                 </li>
             </ul>
-        </template>
+        </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: "MenuList",    
+    name: "MenuList",
     computed: {
-        storeMenus: function () {
+        storeMenus: function() {
             return this.$store.state.menus;
+        },
+        actived: function() {
+            return this.$store.state.activeMenuId;
         }
     }
 };

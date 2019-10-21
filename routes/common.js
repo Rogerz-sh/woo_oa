@@ -12,17 +12,17 @@ router.get('/json-menu-list', (req, res) => {
             {
                 name: '常规分类',
                 items: [
-                    { url: '', text: '人才库' },
-                    { url: '', text: '面试中' },
-                    { url: '', text: '已入职' }
+                    { id: 1, url: '/page/dashboard', text: '人才库' },
+                    { id: 2, url: '', text: '面试中' },
+                    { id: 3, url: '', text: '已入职' }
                 ]
             },
             {
                 name: '我的收藏',
                 items: [
-                    { url: '', text: '985' },
-                    { url: '', text: '有意向' },
-                    { url: '', text: '暂不考虑' }
+                    { id: 4, url: '', text: '985' },
+                    { id: 5, url: '', text: '有意向' },
+                    { id: 6, url: '', text: '暂不考虑' }
                 ]
             }
         ]

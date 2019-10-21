@@ -8,10 +8,13 @@ import ResumeDetail from '../pages/resume/ResumeDetail.vue'
 
 const routes = [
     { path: '/', component: Login },
-    { path: '/dashboard', component: Dashboard },
     {
-        path: '/resume', component: Resume,
+        path: '/page', component: Resume,
         children: [
+            { 
+                path: 'dashboard', 
+                component: Dashboard 
+            },
             {
                 path: 'list',
                 component: ResumeList

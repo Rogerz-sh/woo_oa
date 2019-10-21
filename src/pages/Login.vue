@@ -74,7 +74,7 @@ export default {
                             var data = res.results;
                             sessionStorage.setItem("uid", data.uid);
                             sessionStorage.setItem("token", data.token);
-                            self.$router.push("/resume");
+                            self.$router.push("/page/dashboard");
                         } else {
                             self.error = res.msg;
                         }
