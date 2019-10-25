@@ -7,7 +7,8 @@ const store = new Vuex.Store({
         activeNavId: 1,
         activeMenuId: 1,
         navs: [],
-        menus: []
+        menus: [],
+        nickname: 'Roger'
     },
     mutations: {
         loadNav(state, data) {

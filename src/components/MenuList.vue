@@ -4,7 +4,7 @@
             <p class="menu-label" v-text="menu.name">常规分类</p>
             <ul class="menu-list">
                 <li v-for="item in menu.items" :key="item.id">
-                    <router-link :class="{'is-active': $store.state.activeMenuId == item.id}" :to="item.url" v-text="item.text">人才库</router-link>
+                    <a :class="{'is-active': $store.state.activeMenuId == item.id}" v-text="item.text" @click="goPage(item)"></a>
                 </li>
             </ul>
         </div>
@@ -14,6 +14,11 @@
 <script>
 export default {
     name: "MenuList",
+    methods: {
+        goPage: function (item) {
+            this.$store.commit('activeMenu', item)
+        }
+    },
     computed: {
         storeMenus: function() {
             return this.$store.state.menus;
