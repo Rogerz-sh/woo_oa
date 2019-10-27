@@ -35,9 +35,7 @@ body {
 #app {
     height: 100%;
 }
-#sideBar {
-    position: absolute;
-    top: 0;
-    left: 0;
+.container {
+    padding-left: 200px;
 }
 </style>

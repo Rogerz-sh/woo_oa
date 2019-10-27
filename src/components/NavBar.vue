@@ -21,7 +21,7 @@
                         <a class="navbar-link" v-text="$store.state.nickname"></a>
                         <div class="navbar-dropdown">
                             <router-link to="/page/user-profile" class="navbar-item">个人设置</router-link>
-                            <router-link to="/page/user-logout" class="navbar-item">退出系统</router-link>
+                            <a class="navbar-item" @click="logoutSystem">退出系统</a>
                         </div>
                     </div>
                 </div>
@@ -34,7 +34,14 @@
 <script>
 export default {
     name: "NavBar",
-    props: {}
+    props: {},
+    methods: {
+        logoutSystem: function () {
+            sessionStorage.removeItem('uid');
+            sessionStorage.removeItem('token');
+            this.$router.push('/');
+        }
+    }
 };
 </script>
 

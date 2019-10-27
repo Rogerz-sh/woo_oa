@@ -8,7 +8,8 @@ const store = new Vuex.Store({
         activeMenuId: 1,
         navs: [],
         menus: [],
-        nickname: 'Roger'
+        nickname: 'Roger',
+        showResumeForm: false
     },
     mutations: {
         loadNav(state, data) {
@@ -22,6 +23,9 @@ const store = new Vuex.Store({
         },
         activeMenu(state, data) {
             state.activeMenuId = data.id;
+        },
+        toggleResumeForm(state, flag) {
+            state.showResumeForm = flag;
         }
     }
 });

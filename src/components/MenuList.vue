@@ -33,7 +33,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #menu {
-    margin-top: 10px;
+    padding: 10px 0 50px 0;
 }
 #menu .menu-label {
     color: #ddd;
