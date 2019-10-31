@@ -1,5 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import location from '../data/location'
+
+let location_data = { provinces: [], citys: [] };
+location.province.forEach(v => {
+    let province = { id: v.id, name: v.name };
+    v.citys.forEach(c => {
+        let city = location.citys[c]
+        location_data.citys.push(city)
+    });
+    location_data.provinces.push(province);
+})
 
 Vue.use(Vuex)
 const store = new Vuex.Store({
@@ -9,7 +20,20 @@ const store = new Vuex.Store({
         navs: [],
         menus: [],
         nickname: 'Roger',
-        showResumeForm: false
+        showResumeForm: false,
+        formData: {
+            location: location_data,
+            job_type: [],
+            degree: [
+                "高中",
+                "大专",
+                "本科",
+                "研究生",
+                "硕士",
+                "博士",
+                "博士后"
+            ]
+        }
     },
     mutations: {
         loadNav(state, data) {
@@ -26,6 +50,9 @@ const store = new Vuex.Store({
         },
         toggleResumeForm(state, flag) {
             state.showResumeForm = flag;
+        },
+        loadJobType(state, data) {
+            state.formData.job_type = data;
         }
     }
 });

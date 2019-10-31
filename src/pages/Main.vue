@@ -13,6 +13,9 @@ export default {
         this.$http.get('/api/common/json-menu-list').then(res => {
             self.$store.commit('loadMenu', res.results);
         });
+        this.$http.get('/api/common/json-jobtype-list').then(res => {
+            self.$store.commit('loadJobType', res.results);
+        });
     }
 };
 </script>

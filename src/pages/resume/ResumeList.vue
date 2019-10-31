@@ -81,7 +81,7 @@ export default {
     name: "ResumeList",
     methods: {
         addResume: function () {
-            this.$store.commit('toggleResumeForm', !this.$store.state.showResumeForm);
+            this.$store.commit('toggleResumeForm', true);
         }
     }
 };

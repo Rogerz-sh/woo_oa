@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const tools = require('../utils');
+const JobType = require('../models/job_type')
 
 router.use(tools.auth.authenticate)
 
@@ -28,5 +29,13 @@ router.get('/json-menu-list', (req, res) => {
         ]
     }));
 });
+
+router.get('/json-jobtype-list', (req, res) => {
+    JobType.findAll().then(result => {
+        res.json(tools.handler.success(result));
+    }).catch(err => {
+        res.json(tools.handler.error(101, err));
+    })
+})
 
 module.exports = router;
