@@ -23,12 +23,12 @@ Resume.init({
     province: {
         type: Sequelize.NUMBER,
         allowNull: false,
-        defaultValue: ''
+        defaultValue: 0
     },
     city: {
         type: Sequelize.NUMBER,
         allowNull: false,
-        defaultValue: ''
+        defaultValue: 0
     },
     mobile: {
         type: Sequelize.STRING,
@@ -43,12 +43,12 @@ Resume.init({
     industry: {
         type: Sequelize.NUMBER,
         allowNull: false,
-        defaultValue: ''
+        defaultValue: 0
     },
     jobclass: {
         type: Sequelize.NUMBER,
         allowNull: false,
-        defaultValue: ''
+        defaultValue: 0
     },
     company: {
         type: Sequelize.STRING,
@@ -63,7 +63,7 @@ Resume.init({
     experience: {
         type: Sequelize.NUMBER,
         allowNull: false,
-        defaultValue: ''
+        defaultValue: 0
     },
     school: {
         type: Sequelize.STRING,
@@ -84,6 +84,11 @@ Resume.init({
         type: Sequelize.STRING,
         allowNull: false,
         defaultValue: ''
+    },
+    createdBy: {
+        type: Sequelize.NUMBER,
+        allowNull: false,
+        defaultValue: 0
     }
 }, {
     sequelize,

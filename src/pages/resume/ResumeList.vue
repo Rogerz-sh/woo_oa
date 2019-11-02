@@ -49,22 +49,24 @@
                                     <th>年龄</th>
                                     <th>性别</th>
                                     <th>学历</th>
+                                    <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><label class="checkbox"><input type="checkbox" name="" id=""></label>001</td>
-                                    <td>吴四桂</td>
-                                    <td>39</td>
-                                    <td>男</td>
-                                    <td>专科</td>
-                                </tr>
-                                <tr>
-                                    <td><label class="checkbox"><input type="checkbox" name="" id=""></label>001</td>
-                                    <td>吴四桂</td>
-                                    <td>39</td>
-                                    <td>男</td>
-                                    <td>专科</td>
+                                <tr v-for="r in resumes" :key="r.id">
+                                    <td>
+                                        <label class="checkbox">
+                                            <input type="checkbox" name id />
+                                        </label>
+                                        {{r.id}}
+                                    </td>
+                                    <td>{{r.realname}}</td>
+                                    <td>{{formatBirthYear(r)}}</td>
+                                    <td>{{r.sex}}</td>
+                                    <td>{{r.degree}}</td>
+                                    <td>
+                                        <i class="fa fa-edit pointer" @click="editResume(r)"></i>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -72,17 +74,48 @@
                 </div>
             </section>
         </div>
-        <resume-form></resume-form>
+        <resume-form :updatedAt.sync="timestamp"></resume-form>
     </div>
 </template>
 
 <script>
 export default {
     name: "ResumeList",
+    data: function() {
+        return {
+            page: 1,
+            size: 10,
+            total: 0,
+            resumes: [],
+            timestamp: Date.now()
+        };
+    },
     methods: {
-        addResume: function () {
-            this.$store.commit('toggleResumeForm', true);
+        addResume: function() {
+            this.$store.commit("addNewResume");
+            this.$store.commit("toggleResumeForm", true);
+        },
+        editResume: function(data) {
+            this.$store.commit("editResume", data);
+            this.$store.commit("toggleResumeForm", true);
+        },
+        formatBirthYear: function(item) {
+            return new Date().getFullYear() - item.birthyear;
         }
+    },
+    watch: {
+        timestamp: function() {
+            this.$http.get("/api/resume/json-resume-list").then(res => {
+                this.resumes = res.results.rows;
+                this.total = res.results.count;
+            });
+        }
+    },
+    mounted: function() {
+        this.$http.get("/api/resume/json-resume-list").then(res => {
+            this.resumes = res.results.rows;
+            this.total = res.results.count;
+        });
     }
 };
 </script>
@@ -90,5 +123,8 @@ export default {
 <style scoped>
 #container {
     padding-left: 200px;
+}
+.fa.pointer {
+    cursor: pointer;
 }
 </style>

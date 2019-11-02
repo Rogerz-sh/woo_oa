@@ -33,6 +33,25 @@ const store = new Vuex.Store({
                 "博士",
                 "博士后"
             ]
+        },
+        resumeFormData: {
+            id: 0,
+            realname: "",
+            sex: "",
+            birthyear: "",
+            province: "",
+            city: "",
+            mobile: "",
+            email: "",
+            industry: "",
+            jobclass: "",
+            company: "",
+            job: "",
+            experience: "",
+            school: "",
+            degree: "",
+            filepath: "",
+            filename: ""
         }
     },
     mutations: {
@@ -53,6 +72,30 @@ const store = new Vuex.Store({
         },
         loadJobType(state, data) {
             state.formData.job_type = data;
+        },
+        addNewResume(state) {
+            state.resumeFormData = {
+                id: 0,
+                realname: "",
+                sex: "",
+                birthyear: "",
+                province: "",
+                city: "",
+                mobile: "",
+                email: "",
+                industry: "",
+                jobclass: "",
+                company: "",
+                job: "",
+                experience: "",
+                school: "",
+                degree: "",
+                filepath: "",
+                filename: ""
+            }
+        },
+        editResume(state, data) {
+            state.resumeFormData = data;
         }
     }
 });
