@@ -51,7 +51,8 @@ const store = new Vuex.Store({
             school: "",
             degree: "",
             filepath: "",
-            filename: ""
+            filename: "",
+            createdBy: sessionStorage.getItem('uid') || 0
         }
     },
     mutations: {

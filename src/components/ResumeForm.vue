@@ -37,7 +37,12 @@
                     <div class="control">
                         <div class="select">
                             <select v-model="resume.province">
-                                <option v-for="p in provinces" :key="p.id" :value="p.id" v-text="p.name"></option>
+                                <option
+                                    v-for="p in provinces"
+                                    :key="p.id"
+                                    :value="p.id"
+                                    v-text="p.name"
+                                ></option>
                             </select>
                         </div>
                     </div>
@@ -49,7 +54,12 @@
                     <div class="control">
                         <div class="select">
                             <select v-model="resume.city">
-                                <option v-for="c in citys" :key="c.id" :value="c.id" v-text="c.name"></option>
+                                <option
+                                    v-for="c in citys"
+                                    :key="c.id"
+                                    :value="c.id"
+                                    v-text="c.name"
+                                ></option>
                             </select>
                         </div>
                     </div>
@@ -81,7 +91,12 @@
                     <div class="control">
                         <div class="select">
                             <select v-model="resume.industry">
-                                <option v-for="j in job_parent_types" :key="j.id" :value="j.id" v-text="j.name"></option>
+                                <option
+                                    v-for="j in job_parent_types"
+                                    :key="j.id"
+                                    :value="j.id"
+                                    v-text="j.name"
+                                ></option>
                             </select>
                         </div>
                     </div>
@@ -93,7 +108,12 @@
                     <div class="control">
                         <div class="select">
                             <select v-model="resume.jobclass">
-                                <option v-for="j in job_child_types" :key="j.id" :value="j.id" v-text="j.name"></option>
+                                <option
+                                    v-for="j in job_child_types"
+                                    :key="j.id"
+                                    :value="j.id"
+                                    v-text="j.name"
+                                ></option>
                             </select>
                         </div>
                     </div>
@@ -143,7 +163,12 @@
                     <div class="control">
                         <div class="select">
                             <select v-model="resume.degree">
-                                <option v-for="(d, index) in degrees" :key="index" :value="d" v-text="d"></option>
+                                <option
+                                    v-for="(d, index) in degrees"
+                                    :key="index"
+                                    :value="d"
+                                    v-text="d"
+                                ></option>
                             </select>
                         </div>
                     </div>
@@ -155,7 +180,12 @@
             <div class="column">
                 <div class="file has-name is-fullwidth" v-if="!resume.filename">
                     <label class="file-label">
-                        <input class="file-input" type="file" name="resume" @change="selectFile($event)" />
+                        <input
+                            class="file-input"
+                            type="file"
+                            name="resume"
+                            @change="selectFile($event)"
+                        />
                         <span class="file-cta">
                             <span class="file-icon">
                                 <i class="fa fa-upload"></i>
@@ -165,8 +195,13 @@
                         <span class="file-name" v-text="file_name">尚未选择任何文件</span>
                     </label>
                 </div>
-                <div class="control" v-if="resume.filename">
-                    <input type="text" class="input is-static" :value="resume.filename" />
+                <div class="field" v-if="resume.filename">
+                    <div class="control is-expanded has-addons">
+                        <input type="text" class="input is-static" :value="resume.filename" />
+                        <span class="icon is-small is-right">
+                            <i class="fa fa-trash-o has-text-danger" @click="deleteFile"></i>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -188,39 +223,65 @@ export default {
     name: "ResumeForm",
     data: function() {
         return {
-            file: null
+            file: null,
+            hasFile: false
         };
     },
     methods: {
         selectFile: function($event) {
             this.file = $event.target.files[0];
+            this.hasFile = true;
+        },
+        deleteFile: function () {
+            this.file = null;
+            this.hasFile = false;
+            this.resume.filepath = '';
+            this.resume.filename = '';
         },
         close: function() {
             this.$store.commit("toggleResumeForm", false);
         },
         save: function() {
-            if (!this.file && this.resume.id == 0) return;
-            let self = this, param = new FormData();
+            if (!this.hasFile) return;
+            let self = this,
+                param = new FormData();
             param.append("file", this.file);
             let config = {
                 headers: {
                     "Content-Type": "multipart/form-data"
-                },
+                }
             };
-            self.$http
-                .post("/api/common/upload-file", param, config)
-                .then(function(res) {
-                    let filepath = res.results.filepath, resumeData = Object.assign({}, self.resume);
-                    resumeData.filepath = filepath;
-                    resumeData.filename = self.file.name;
-                    self.$http.post('/api/resume/save-resume', {resume: resumeData}).then(res => {
-                        self.$emit('update:updatedAt', Date.now());
-                        self.close();
+            if (this.file) {
+                self.$http
+                    .post("/api/common/upload-file", param, config)
+                    .then(function(res) {
+                        let filepath = res.results.filepath,
+                            resumeData = Object.assign({}, self.resume);
+                        resumeData.filepath = filepath;
+                        resumeData.filename = self.file.name;
+                        self.$http
+                            .post("/api/resume/save-resume", {
+                                resume: resumeData
+                            })
+                            .then(res => {
+                                self.$emit("update:updatedAt", Date.now());
+                                self.close();
+                            });
                     })
-                })
-                .catch(function() {
-                    // item.uploadStatus = -1;
-                });
+                    .catch(function() {
+                        // item.uploadStatus = -1;
+                    });
+            } else {
+                let resumeData = Object.assign({}, self.resume);
+                self.$http
+                    .post("/api/resume/save-resume", {
+                        resume: resumeData
+                    })
+                    .then(res => {
+                        self.$emit("update:updatedAt", Date.now());
+                        self.close();
+                    });
+            }
         }
     },
     computed: {
@@ -252,7 +313,11 @@ export default {
             return this.file ? this.file.name : "尚未选择任何文件";
         },
         resume: function() {
-            return this.$store.state.resumeFormData;
+            let resumeData = this.$store.state.resumeFormData;
+            if (resumeData.filename && resumeData.filepath) {
+                this.hasFile = true;
+            }
+            return resumeData;
         }
     }
 };
