@@ -35,12 +35,7 @@
                         <div class="select">
                             <select v-model="search.degree">
                                 <option value>不限</option>
-                                <option
-                                    v-for="(d, index) in degrees"
-                                    :key="index"
-                                    :value="d"
-                                    v-text="d"
-                                ></option>
+                                <option v-for="(d, index) in degrees" :key="index" :value="d" v-text="d"></option>
                             </select>
                         </div>
                     </div>
@@ -72,7 +67,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div> -->
+                    </div>-->
                     <div class="column is-1">
                         <div class="field">
                             <label class="label">&nbsp;</label>
@@ -119,10 +114,7 @@
                                     <td>{{r.company}}</td>
                                     <td>{{r.job}}</td>
                                     <td>
-                                        <a
-                                            :href="'/api/resume/download?path='+r.filepath+'&name='+r.filename+''"
-                                            class="button is-small is-light"
-                                        >
+                                        <a :href="'/api/resume/download?path='+r.filepath+'&name='+r.filename+''" class="button is-small is-light">
                                             <i class="fa fa-download"></i>
                                         </a>
                                     </td>
@@ -192,7 +184,11 @@ export default {
             this.$store.commit("toggleResumeForm", true);
         },
         formatBirthYear: function(item) {
-            return new Date().getFullYear() - item.birthyear;
+            if (item.birthyear) {
+                return new Date().getFullYear() - item.birthyear;
+            } else {
+                return '--';
+            }
         }
     },
     watch: {
