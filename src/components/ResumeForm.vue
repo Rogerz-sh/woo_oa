@@ -259,7 +259,7 @@ export default {
                             resumeData = Object.assign({}, self.resume);
                         resumeData.filepath = filepath;
                         resumeData.filename = self.file.name;
-                        resumeData.createdBy = sessionStorage.getItem('uid');
+                        resumeData.createdBy = +sessionStorage.getItem('uid');
                         self.$http
                             .post("/api/resume/save-resume", {
                                 resume: resumeData

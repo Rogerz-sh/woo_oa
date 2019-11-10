@@ -21,6 +21,7 @@ const store = new Vuex.Store({
         menus: [],
         nickname: 'Roger',
         showResumeForm: false,
+        showRecordList: false,
         formData: {
             location: location_data,
             job_type: [],
@@ -70,6 +71,9 @@ const store = new Vuex.Store({
         },
         toggleResumeForm(state, flag) {
             state.showResumeForm = flag;
+        },
+        toggleRecordList(state, flag) {
+            state.showRecordList = flag;
         },
         loadJobType(state, data) {
             state.formData.job_type = data;

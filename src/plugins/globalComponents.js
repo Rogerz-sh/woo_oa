@@ -4,6 +4,7 @@ import NavBar from '../components/NavBar.vue'
 import MenuList from '../components/MenuList.vue'
 import PageNav from '../components/PageNav.vue'
 import ResumeForm from '../components/ResumeForm.vue'
+import RecordList from '../components/RecordList.vue'
 
 const GlobalComponents = {
   install(Vue) {
@@ -13,6 +14,7 @@ const GlobalComponents = {
     Vue.component(MenuList.name, MenuList)
     Vue.component(PageNav.name, PageNav)
     Vue.component(ResumeForm.name, ResumeForm)
+    Vue.component(RecordList.name, RecordList)
   }
 };
 

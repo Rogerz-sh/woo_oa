@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const Sequelize = require('sequelize');
 const tools = require('../utils');
 const path = require('path');
+const User = require('../models/user')
 const Resume = require('../models/resume')
+const ResumeRecord = require('../models/resume_record')
 
 router.get('/download', (req, res) => {
     let filepath = req.query.path, filename = req.query.name;
@@ -62,6 +65,34 @@ router.post('/save-resume', (req, res) => {
         })
     }
 
+})
+
+router.get('/json-resume-record-list', (req, res) => {
+    let resumeId = req.query.resumeId;
+    ResumeRecord.findAll({
+        where: {
+            resumeId: resumeId
+        },
+        include: [
+            {
+                model: User,
+                where: { id: { $eq: Sequelize.col('resume_record.createdBy') } }
+            }
+        ]
+    }).then(result => {
+        res.json(tools.handler.success(result));
+    }).catch(err => {
+        res.json(tools.handler.error(101, err));
+    })
+})
+
+router.post('/save-resume-record', (req, res) => {
+    let record = req.body.record;
+    ResumeRecord.create(record).then(result => {
+        res.json(tools.handler.success(result));
+    }).catch(err => {
+        res.json(tools.handler.error(101, err));
+    });
 })
 
 module.exports = router;

@@ -119,7 +119,8 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <i class="fa fa-edit pointer" @click="editResume(r)"></i>
+                                        <i class="fa fa-edit pointer" @click="editResume(r)"></i>&nbsp;
+                                        <i class="fa fa-list pointer" @click="listRecord(r)"></i>
                                     </td>
                                 </tr>
                             </tbody>
@@ -134,6 +135,7 @@
             </section>
         </div>
         <resume-form :updatedAt.sync="timestamp"></resume-form>
+        <record-list :resume="recordListResume"></record-list>
     </div>
 </template>
 
@@ -154,7 +156,8 @@ export default {
                 company: "",
                 job: "",
                 experience: ""
-            }
+            },
+            recordListResume: null          
         };
     },
     methods: {
@@ -189,6 +192,11 @@ export default {
             } else {
                 return '--';
             }
+        },
+        listRecord: function (item) {
+            this.$store.commit('toggleRecordList', true);
+            this.recordListResume = item;
+            // item.age = 5;
         }
     },
     watch: {
