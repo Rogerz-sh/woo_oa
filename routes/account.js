@@ -15,7 +15,7 @@ router.post('/account-login', async (req, res) => {
     if (user) {
         user = user.toJSON();
         let token = tools.auth.token(user.id);
-        res.json(tools.handler.success({ uid: user.id, token }))
+        res.json(tools.handler.success({ user, token }))
     } else {
         res.json(tools.handler.error(101, '用户名或密码不正确'));
     }

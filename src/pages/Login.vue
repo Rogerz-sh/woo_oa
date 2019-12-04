@@ -72,8 +72,10 @@ export default {
                     .then(res => {
                         if (res.code == 200) {
                             var data = res.results;
-                            sessionStorage.setItem("uid", data.uid);
+                            sessionStorage.setItem("uid", data.user.id);
+                            sessionStorage.setItem("user", data.user);
                             sessionStorage.setItem("token", data.token);
+                            self.$store.commit('loadUser', data.user);
                             self.$router.push("/page/dashboard");
                         } else {
                             self.error = res.msg;

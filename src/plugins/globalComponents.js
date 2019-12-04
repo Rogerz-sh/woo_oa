@@ -1,3 +1,4 @@
+import moment from 'moment'
 import Validation from './validation'
 import SideBar from '../components/SideBar.vue'
 import NavBar from '../components/NavBar.vue'
@@ -15,6 +16,7 @@ const GlobalComponents = {
     Vue.component(PageNav.name, PageNav)
     Vue.component(ResumeForm.name, ResumeForm)
     Vue.component(RecordList.name, RecordList)
+    Vue.prototype.$moment = moment;
   }
 };
 

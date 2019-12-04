@@ -18,7 +18,7 @@
                 <div class="columns is-vcentered">
                     <img src="/images/head.png" id="avatar" />
                     <div class="navbar-item has-dropdown is-hoverable is-spaced">
-                        <a class="navbar-link" v-text="$store.state.nickname"></a>
+                        <a class="navbar-link" v-text="$store.state.user.nickname"></a>
                         <div class="navbar-dropdown">
                             <router-link to="/page/user-profile" class="navbar-item">个人设置</router-link>
                             <a class="navbar-item" @click="logoutSystem">退出系统</a>

@@ -4,7 +4,7 @@
         <div class="panel-block" v-for="r in recordList" :key="r.id">
             <span class="has-text-primary">{{r.user.username}}：</span>
             <span>{{r.content}}</span>
-            <small class="datetime">({{r.createdAt}})</small>
+            <small class="datetime">({{timeFormat(r.createdAt)}})</small>
         </div>
         <div class="panel-block columns is-gapless">
             <div class="field column">
@@ -62,6 +62,7 @@ export default {
         },
         addRecord: function() {
             let self = this;
+            if (!self.content || !self.resumeId) return;
             self.$http
                 .post("/api/resume/save-resume-record", {
                     record: {
@@ -75,6 +76,9 @@ export default {
                     self.getUserRecordList();
                 })
                 .catch(err => {});
+        },
+        timeFormat: function (date) {
+            return this.$moment(date).format('YYYY-MM-DD HH:mm:ss')
         }
     },
     watch: {

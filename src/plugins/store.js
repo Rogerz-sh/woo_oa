@@ -19,7 +19,10 @@ const store = new Vuex.Store({
         activeMenuId: 1,
         navs: [],
         menus: [],
-        nickname: 'Roger',
+        user: {
+            nickname: '',
+            avatar: ''
+        },
         showResumeForm: false,
         showRecordList: false,
         formData: {
@@ -62,6 +65,9 @@ const store = new Vuex.Store({
         },
         loadMenu(state, data) {
             state.menus = data.menus
+        },
+        loadUser(state, data) {
+            state.user = data;
         },
         activeNav(state, data) {
             state.activeNavId = data.id;
