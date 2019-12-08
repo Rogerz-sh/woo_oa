@@ -56,6 +56,8 @@ const store = new Vuex.Store({
             degree: "",
             filepath: "",
             filename: "",
+            educations: [],
+            works: [],
             createdBy: sessionStorage.getItem('uid') || 0
         }
     },
@@ -102,7 +104,26 @@ const store = new Vuex.Store({
                 school: "",
                 degree: "",
                 filepath: "",
-                filename: ""
+                filename: "",
+                educations: [
+                    {
+                        school: '',
+                        degree: '',
+                        major: '',
+                        isunified: '是',
+                        endtime: ''
+                    }
+                ],
+                works: [
+                    {
+                        company: '',
+                        job: '',
+                        department: '',
+                        salary: '',
+                        starttime: '',
+                        endtime: ''
+                    }
+                ]
             }
         },
         editResume(state, data) {

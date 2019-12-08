@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const Model = Sequelize.Model;
 const sequelize = require('./db');
+const ResumeWork = require('./resume_work')
 
 class Resume extends Model { }
 Resume.init({
@@ -95,5 +96,7 @@ Resume.init({
     modelName: 'resume',
     timestamps: true
 });
+
+Resume.hasMany(ResumeWork);
 
 module.exports = Resume;

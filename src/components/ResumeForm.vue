@@ -119,8 +119,24 @@
                     </div>
                 </div>
             </div>
+            <div class="column is-2">
+                <div class="field">
+                    <label class="label">学历</label>
+                    <div class="control">
+                        <div class="select">
+                            <select v-model="resume.degree">
+                                <option
+                                    v-for="(d, index) in degrees"
+                                    :key="index"
+                                    :value="d"
+                                    v-text="d"
+                                ></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <p class="heading">工作信息</p>
         <div class="columns">
             <div class="column">
                 <div class="field">
@@ -147,29 +163,123 @@
                 </div>
             </div>
         </div>
-        <p class="heading">最高学历</p>
-        <div class="columns">
-            <div class="column">
-                <div class="field">
-                    <label class="label">毕业院校</label>
-                    <div class="control">
-                        <input type="text" class="input" v-model="resume.school" />
+        <p class="heading">
+            工作经历
+            <i class="fa fa-plus pointer" @click="addWorks"></i>
+        </p>
+        <div class="box" v-for="(work,idx) in resume.works" :key="'w' + idx">
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label">任职公司</label>
+                        <div class="control">
+                            <input type="text" class="input" />
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">任职岗位</label>
+                        <div class="control">
+                            <input type="text" class="input" />
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">所在部门</label>
+                        <div class="control">
+                            <input type="text" class="input" />
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="column is-3">
-                <div class="field">
-                    <label class="label">学历</label>
-                    <div class="control">
-                        <div class="select">
-                            <select v-model="resume.degree">
-                                <option
-                                    v-for="(d, index) in degrees"
-                                    :key="index"
-                                    :value="d"
-                                    v-text="d"
-                                ></option>
-                            </select>
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label">入职时间</label>
+                        <div class="control">
+                            <input type="text" class="input" />
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">离职时间</label>
+                        <div class="control">
+                            <input type="text" class="input" />
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">月薪</label>
+                        <div class="control">
+                            <input type="text" class="input" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="heading">
+            教育经历
+            <i class="fa fa-plus pointer" @click="addEducations"></i>
+        </p>
+        <div class="box" v-for="(edu,idx) in resume.educations" :key="'e' + idx">
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label">毕业院校</label>
+                        <div class="control">
+                            <input type="text" class="input" />
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">专业</label>
+                        <div class="control">
+                            <input type="text" class="input" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label">毕业时间</label>
+                        <div class="control">
+                            <input type="text" class="input" />
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">学历</label>
+                        <div class="control">
+                            <div class="select">
+                                <select>
+                                    <option
+                                        v-for="(d, index) in degrees"
+                                        :key="index"
+                                        :value="d"
+                                        v-text="d"
+                                    ></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">是否统招</label>
+                        <div class="control">
+                            <div class="select">
+                                <select>
+                                    <option value="是">是</option>
+                                    <option value="否">否</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -232,11 +342,32 @@ export default {
             this.file = $event.target.files[0];
             this.hasFile = true;
         },
-        deleteFile: function () {
+        deleteFile: function() {
             this.file = null;
             this.hasFile = false;
-            this.resume.filepath = '';
-            this.resume.filename = '';
+            this.resume.filepath = "";
+            this.resume.filename = "";
+        },
+        addWorks: function() {
+            this.resume.works.push({
+                id: (this.resume.works.length * -1) + '',
+                company: "",
+                job: "",
+                department: "",
+                salary: "",
+                starttime: "",
+                endtime: ""
+            });
+        },
+        addEducations: function() {
+            this.resume.educations.push({
+                id: (this.resume.works.length * -1) + '',
+                school: "",
+                degree: "",
+                major: "",
+                isunified: "是",
+                endtime: ""
+            });
         },
         close: function() {
             this.$store.commit("toggleResumeForm", false);
@@ -259,7 +390,7 @@ export default {
                             resumeData = Object.assign({}, self.resume);
                         resumeData.filepath = filepath;
                         resumeData.filename = self.file.name;
-                        resumeData.createdBy = +sessionStorage.getItem('uid');
+                        resumeData.createdBy = +sessionStorage.getItem("uid");
                         self.$http
                             .post("/api/resume/save-resume", {
                                 resume: resumeData
@@ -283,6 +414,21 @@ export default {
                         self.close();
                     });
             }
+        }
+    },
+    watch: {
+        'resume.id': function (nid, oid) {
+            if (!nid) return;
+            this.$http
+                .get("/api/resume/json-resume-works-and-edcations", {
+                    params: {
+                        resumeId: nid
+                    }
+                })
+                .then(res => {
+                    this.resume.works = res.results.works;
+                    this.resume.educations = res.results.educations;
+                });
         }
     },
     computed: {
@@ -340,6 +486,11 @@ export default {
 }
 #resumeForm.hidden {
     display: none;
+}
+.box {
+    border: 1px solid #ddd;
+    padding: 10px 5px;
+    border-radius: 5px;
 }
 .select,
 .select select {
