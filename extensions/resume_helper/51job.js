@@ -65,6 +65,7 @@ $(function () {
                     work.company = table.find('tr:eq(0)').find('td:eq(1) span:eq(0)').text();
                     work.job = table.find('tr:eq(2)').find('td:eq(1)').text();
                     work.department = table.find('tr:eq(2)').find('td:eq(0)').text();
+                    if (!work.company) continue;
 
                     var times = table.find('tr:eq(0)').find('td.time').text().match(/(\d+\/\d+|至今)/g);
                     work.starttime = times[0].split('/').join('-');
@@ -87,6 +88,7 @@ $(function () {
                         "isunified": "是"
                     };
                     education.school = table.find('tr:eq(0)').find('td:eq(1)').text();
+                    if (!education.school) continue;
 
                     var times = table.find('tr:eq(0)').find('td.time').text().match(/(\d+\/\d+|至今)/g);
                     education.starttime = times[0].split('/').join('-');
