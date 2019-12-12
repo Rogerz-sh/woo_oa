@@ -121,7 +121,8 @@ const store = new Vuex.Store({
                         department: '',
                         salary: '',
                         starttime: '',
-                        endtime: ''
+                        endtime: '',
+                        description: ''
                     }
                 ]
             }

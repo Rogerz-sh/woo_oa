@@ -1,11 +1,14 @@
 const Sequelize = require('sequelize');
 const Model = Sequelize.Model;
 const sequelize = require('./db');
-const Resume = require('./resume');
 
 class ResumeWork extends Model { }
 ResumeWork.init({
     // attributes
+    resumeId: {
+        type: Sequelize.NUMBER,
+        allowNull: false,
+    },
     company: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -32,6 +35,11 @@ ResumeWork.init({
         defaultValue: ''
     },
     endtime: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: ''
+    },
+    description: {
         type: Sequelize.STRING,
         allowNull: false,
         defaultValue: ''

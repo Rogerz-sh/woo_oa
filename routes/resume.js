@@ -58,36 +58,130 @@ router.get('/json-resume-works-and-edcations', (req, res) => {
 });
 
 async function getWorksAndEducations(resumeId) {
+    let resume = await Resume.findOne({
+        where: { id: resumeId }
+    });
     let works = await ResumeWork.findAll({
         where: { resumeId: resumeId }
     });
     let educations = await ResumeEducation.findAll({
         where: { resumeId: resumeId }
-    })
-    return { works: works, educations: educations };
+    });
+    return { resume: resume, works: works, educations: educations };
 }
 
 router.post('/save-resume', (req, res) => {
-    let resume = req.body.resume, id = resume.id;
+    saveResume(req).then(result => {
+        res.json(tools.handler.success(result));
+    }).catch(err => {
+        res.json(tools.handler.error(101, err));
+    })
+})
+
+async function saveResume(req) {
+    let resume = req.body.resume, id = resume.id, works = resume.works, educations = resume.educations, result;
     delete resume.id;
+    delete resume.works;
+    delete resume.educations;
     if (id == 0) {
-        Resume.create(resume).then(result => {
-            res.json(tools.handler.success(result));
-        }).catch(err => {
-            res.json(tools.handler.error(101, err));
-        })
+        result = await Resume.create(resume);
+        id = result.id;
     } else {
-        Resume.update(resume, {
+        result = await Resume.update(resume, {
             where: {
                 id: id
             }
-        }).then((result) => {
-            res.json(tools.handler.success(result));
-        }).catch(err => {
-            res.json(tools.handler.error(101, err));
         })
     }
+    await ResumeWork.destroy({
+        where: {
+            resumeId: id
+        },
+        force: true
+    });
+    for (let i = 0; i < works.length; i++) {
+        let work = works[i];
+        work.resumeId = id;
+        delete work.id;
+        await ResumeWork.create(work);
+    }
+    await ResumeEducation.destroy({
+        where: {
+            resumeId: id
+        },
+        force: true
+    });
+    for (let i = 0; i < educations.length; i++) {
+        let education = educations[i];
+        education.resumeId = id;
+        delete education.id;
+        await ResumeEducation.create(education);
+    }
+    return id;
+}
 
+router.post('/save-resume-by-chrome', (req, res) => {
+    saveResumeByChrome(req).then(result => {
+        res.json(tools.handler.success(result));
+    }).catch(err => {
+        res.json(tools.handler.error(101, err));
+    })
+})
+
+async function saveResumeByChrome(req) {
+    let resume = typeof(req.body.resume) == 'string' ? JSON.parse(req.body.resume) : req.body.resume, works = resume.works, educations = resume.educations, result, id;
+    delete resume.id;
+    delete resume.works;
+    delete resume.educations;
+    let exist = await Resume.findOne({
+        where: {
+            mobile: resume.mobile
+        }
+    })
+    if (exist) {
+        return Promise.reject('手机号码已被录入');
+    } else {
+        result = await Resume.create(resume);
+        id = result.id;
+    }
+    await ResumeWork.destroy({
+        where: {
+            resumeId: id
+        },
+        force: true
+    });
+    for (let i = 0; i < works.length; i++) {
+        let work = works[i];
+        work.resumeId = id;
+        delete work.id;
+        await ResumeWork.create(work);
+    }
+    await ResumeEducation.destroy({
+        where: {
+            resumeId: id
+        },
+        force: true
+    });
+    for (let i = 0; i < educations.length; i++) {
+        let education = educations[i];
+        education.resumeId = id;
+        delete education.id;
+        await ResumeEducation.create(education);
+    }
+    return id;
+}
+
+router.post('/remove-resume', (req, res) => {
+    let resumeId = req.body.resumeId;
+    Resume.destroy({
+        where: {
+            id: resumeId
+        }
+    }).then(result => {
+        res.json(tools.handler.success(result));
+    }).catch(err => {
+        res.json(tools.handler.error(101, err));
+    });
 })
 
 router.get('/json-resume-record-list', (req, res) => {

@@ -37,12 +37,7 @@
                     <div class="control">
                         <div class="select">
                             <select v-model="resume.province">
-                                <option
-                                    v-for="p in provinces"
-                                    :key="p.id"
-                                    :value="p.id"
-                                    v-text="p.name"
-                                ></option>
+                                <option v-for="p in provinces" :key="p.id" :value="p.id" v-text="p.name"></option>
                             </select>
                         </div>
                     </div>
@@ -54,12 +49,7 @@
                     <div class="control">
                         <div class="select">
                             <select v-model="resume.city">
-                                <option
-                                    v-for="c in citys"
-                                    :key="c.id"
-                                    :value="c.id"
-                                    v-text="c.name"
-                                ></option>
+                                <option v-for="c in citys" :key="c.id" :value="c.id" v-text="c.name"></option>
                             </select>
                         </div>
                     </div>
@@ -91,12 +81,7 @@
                     <div class="control">
                         <div class="select">
                             <select v-model="resume.industry">
-                                <option
-                                    v-for="j in job_parent_types"
-                                    :key="j.id"
-                                    :value="j.id"
-                                    v-text="j.name"
-                                ></option>
+                                <option v-for="j in job_parent_types" :key="j.id" :value="j.id" v-text="j.name"></option>
                             </select>
                         </div>
                     </div>
@@ -108,12 +93,7 @@
                     <div class="control">
                         <div class="select">
                             <select v-model="resume.jobclass">
-                                <option
-                                    v-for="j in job_child_types"
-                                    :key="j.id"
-                                    :value="j.id"
-                                    v-text="j.name"
-                                ></option>
+                                <option v-for="j in job_child_types" :key="j.id" :value="j.id" v-text="j.name"></option>
                             </select>
                         </div>
                     </div>
@@ -125,12 +105,7 @@
                     <div class="control">
                         <div class="select">
                             <select v-model="resume.degree">
-                                <option
-                                    v-for="(d, index) in degrees"
-                                    :key="index"
-                                    :value="d"
-                                    v-text="d"
-                                ></option>
+                                <option v-for="(d, index) in degrees" :key="index" :value="d" v-text="d"></option>
                             </select>
                         </div>
                     </div>
@@ -173,7 +148,7 @@
                     <div class="field">
                         <label class="label">任职公司</label>
                         <div class="control">
-                            <input type="text" class="input" />
+                            <input type="text" class="input" v-model="work.company" />
                         </div>
                     </div>
                 </div>
@@ -181,7 +156,7 @@
                     <div class="field">
                         <label class="label">任职岗位</label>
                         <div class="control">
-                            <input type="text" class="input" />
+                            <input type="text" class="input" v-model="work.job" />
                         </div>
                     </div>
                 </div>
@@ -189,7 +164,7 @@
                     <div class="field">
                         <label class="label">所在部门</label>
                         <div class="control">
-                            <input type="text" class="input" />
+                            <input type="text" class="input" v-model="work.department" />
                         </div>
                     </div>
                 </div>
@@ -199,7 +174,7 @@
                     <div class="field">
                         <label class="label">入职时间</label>
                         <div class="control">
-                            <input type="text" class="input" />
+                            <input type="text" class="input" v-model="work.starttime" />
                         </div>
                     </div>
                 </div>
@@ -207,7 +182,7 @@
                     <div class="field">
                         <label class="label">离职时间</label>
                         <div class="control">
-                            <input type="text" class="input" />
+                            <input type="text" class="input" v-model="work.endtime" />
                         </div>
                     </div>
                 </div>
@@ -215,7 +190,17 @@
                     <div class="field">
                         <label class="label">月薪</label>
                         <div class="control">
-                            <input type="text" class="input" />
+                            <input type="text" class="input" v-model="work.salary" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label">工作描述</label>
+                        <div class="control">
+                            <textarea class="textarea" v-model="work.description"></textarea>
                         </div>
                     </div>
                 </div>
@@ -231,7 +216,7 @@
                     <div class="field">
                         <label class="label">毕业院校</label>
                         <div class="control">
-                            <input type="text" class="input" />
+                            <input type="text" class="input" v-model="edu.school" />
                         </div>
                     </div>
                 </div>
@@ -239,7 +224,7 @@
                     <div class="field">
                         <label class="label">专业</label>
                         <div class="control">
-                            <input type="text" class="input" />
+                            <input type="text" class="input" v-model="edu.major" />
                         </div>
                     </div>
                 </div>
@@ -249,7 +234,7 @@
                     <div class="field">
                         <label class="label">毕业时间</label>
                         <div class="control">
-                            <input type="text" class="input" />
+                            <input type="text" class="input" v-model="edu.endtime" />
                         </div>
                     </div>
                 </div>
@@ -258,13 +243,8 @@
                         <label class="label">学历</label>
                         <div class="control">
                             <div class="select">
-                                <select>
-                                    <option
-                                        v-for="(d, index) in degrees"
-                                        :key="index"
-                                        :value="d"
-                                        v-text="d"
-                                    ></option>
+                                <select v-model="edu.degree">
+                                    <option v-for="(d, index) in degrees" :key="index" :value="d" v-text="d"></option>
                                 </select>
                             </div>
                         </div>
@@ -275,7 +255,7 @@
                         <label class="label">是否统招</label>
                         <div class="control">
                             <div class="select">
-                                <select>
+                                <select v-model="edu.isunified">
                                     <option value="是">是</option>
                                     <option value="否">否</option>
                                 </select>
@@ -290,12 +270,7 @@
             <div class="column">
                 <div class="file has-name is-fullwidth" v-if="!resume.filename">
                     <label class="file-label">
-                        <input
-                            class="file-input"
-                            type="file"
-                            name="resume"
-                            @change="selectFile($event)"
-                        />
+                        <input class="file-input" type="file" name="resume" @change="selectFile($event)" />
                         <span class="file-cta">
                             <span class="file-icon">
                                 <i class="fa fa-upload"></i>
@@ -334,7 +309,8 @@ export default {
     data: function() {
         return {
             file: null,
-            hasFile: false
+            hasFile: false,
+            resume: {}
         };
     },
     methods: {
@@ -350,7 +326,7 @@ export default {
         },
         addWorks: function() {
             this.resume.works.push({
-                id: (this.resume.works.length * -1) + '',
+                id: this.resume.works.length * -1 + "",
                 company: "",
                 job: "",
                 department: "",
@@ -361,7 +337,7 @@ export default {
         },
         addEducations: function() {
             this.resume.educations.push({
-                id: (this.resume.works.length * -1) + '',
+                id: this.resume.works.length * -1 + "",
                 school: "",
                 degree: "",
                 major: "",
@@ -417,17 +393,20 @@ export default {
         }
     },
     watch: {
-        'resume.id': function (nid, oid) {
+        resumeId: function(nid, oid) {
             if (!nid) return;
-            this.$http
+            var self = this;
+            self.$http
                 .get("/api/resume/json-resume-works-and-edcations", {
                     params: {
                         resumeId: nid
                     }
                 })
                 .then(res => {
-                    this.resume.works = res.results.works;
-                    this.resume.educations = res.results.educations;
+                    var resume = res.results.resume;
+                    resume.works = res.results.works;
+                    resume.educations = res.results.educations;
+                    self.resume = resume;
                 });
         }
     },
@@ -459,13 +438,25 @@ export default {
         file_name: function() {
             return this.file ? this.file.name : "尚未选择任何文件";
         },
-        resume: function() {
-            let resumeData = this.$store.state.resumeFormData;
+        resumeId: function() {
+            var resumeData = this.$store.state.resumeFormData;
             if (resumeData.filename && resumeData.filepath) {
                 this.hasFile = true;
             }
-            return resumeData;
+            return resumeData.id || 0;
         }
+        // resume: {
+        //     get: function() {
+        //         this.resumeData = this.$store.state.resumeFormData;
+        //         if (resumeData.filename && resumeData.filepath) {
+        //             this.hasFile = true;
+        //         }
+        //         return this.resumeData;
+        //     },
+        //     set: function(resume) {
+
+        //     }
+        // }
     }
 };
 </script>

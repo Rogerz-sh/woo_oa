@@ -99,7 +99,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="r in resumes" :key="r.id">
+                                <tr v-for="(r, idx) in resumes" :key="r.id">
                                     <td>
                                         <label class="checkbox">
                                             <input type="checkbox" name id />
@@ -114,13 +114,14 @@
                                     <td>{{r.company}}</td>
                                     <td>{{r.job}}</td>
                                     <td>
-                                        <a :href="'/api/resume/download?path='+r.filepath+'&name='+r.filename+''" class="button is-small is-light">
+                                        <a v-show="r.filepath" :href="'/api/resume/download?path='+r.filepath+'&name='+r.filename+''" class="button is-small is-light">
                                             <i class="fa fa-download"></i>
                                         </a>
                                     </td>
                                     <td>
                                         <i class="fa fa-edit pointer" @click="editResume(r)"></i>&nbsp;
-                                        <i class="fa fa-list pointer" @click="listRecord(r)"></i>
+                                        <i class="fa fa-list pointer" @click="listRecord(r)"></i>&nbsp;
+                                        <i class="fa fa-trash-o pointer" @click="delResume(r, idx)"></i>
                                     </td>
                                 </tr>
                             </tbody>
@@ -185,6 +186,19 @@ export default {
         editResume: function(data) {
             this.$store.commit("editResume", data);
             this.$store.commit("toggleResumeForm", true);
+        },
+        delResume: function(data, idx) {            
+            this.$http
+                .post("/api/resume/remove-resume", {
+                    resumeId: data.id
+                })
+                .then(res => {
+                    if (res.code == 200) {
+                        this.getResumeData();
+                    } else {
+                        alert(res.msg);
+                    }
+                });
         },
         formatBirthYear: function(item) {
             if (item.birthyear) {

@@ -1,0 +1,47 @@
+{
+  "manifest_version": 2,
+  "name": "ResumeHelper",
+  "version": "1.0.1",
+  "description": "Catch Resume Data from Websites",
+  "icons": {
+    "24": "icon.png"
+  },
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_title": "ResumeHelper",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://ehire.51job.com/*",
+        "https://ehire.51job.com/*"
+      ],
+      "js": [
+        "jquery.min.js",
+        "51job.js"
+      ]
+    },
+    {
+      "matches": [
+        "http://sys.giewoo.com:8000/*",
+        "http://localhost:8080/*"
+      ],
+      "js": [
+        "jquery.min.js",
+        "write.js"
+      ]
+    }
+  ]
+}
