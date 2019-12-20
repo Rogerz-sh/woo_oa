@@ -16,7 +16,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         activeNavId: 1,
-        activeMenuId: 1,
+        activeMenuId: 0,
+        activeFavId: 0,
         navs: [],
         menus: [],
         user: {
@@ -66,7 +67,7 @@ const store = new Vuex.Store({
             state.navs = data.navs
         },
         loadMenu(state, data) {
-            state.menus = data.menus
+            state.menus = data
         },
         loadUser(state, data) {
             state.user = data;

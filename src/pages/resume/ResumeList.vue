@@ -1,7 +1,7 @@
 <template>
     <div>
         <side-bar>
-            <menu-list></menu-list>
+            <fav-list></fav-list>
         </side-bar>
         <div id="container">
             <section class="section">
@@ -158,7 +158,7 @@ export default {
                 job: "",
                 experience: ""
             },
-            recordListResume: null          
+            recordListResume: null
         };
     },
     methods: {
@@ -187,7 +187,7 @@ export default {
             this.$store.commit("editResume", data);
             this.$store.commit("toggleResumeForm", true);
         },
-        delResume: function(data, idx) {            
+        delResume: function(data, idx) {
             this.$http
                 .post("/api/resume/remove-resume", {
                     resumeId: data.id
@@ -204,11 +204,11 @@ export default {
             if (item.birthyear) {
                 return new Date().getFullYear() - item.birthyear;
             } else {
-                return '--';
+                return "--";
             }
         },
-        listRecord: function (item) {
-            this.$store.commit('toggleRecordList', true);
+        listRecord: function(item) {
+            this.$store.commit("toggleRecordList", true);
             this.recordListResume = item;
             // item.age = 5;
         }
@@ -227,7 +227,8 @@ export default {
         }
     },
     mounted: function() {
-        this.getResumeData();
+        var self = this;
+        self.getResumeData();
     }
 };
 </script>
@@ -238,5 +239,14 @@ export default {
 }
 .fa.pointer {
     cursor: pointer;
+}
+#menu {
+    padding: 10px 0 50px 0;
+}
+#menu .menu-label {
+    color: #ddd;
+}
+a {
+    color: #fff;
 }
 </style>

@@ -9,6 +9,7 @@ var fs = require('fs');
 var router_account = require('./routes/account');
 var router_common = require('./routes/common');
 var router_resume = require('./routes/resume');
+var router_user = require('./routes/user');
 
 var app = express();
 
@@ -46,6 +47,7 @@ app.use(function (req, res, next) {
 app.use('/api/account', router_account);
 app.use('/api/common', router_common);
 app.use('/api/resume', router_resume);
+app.use('/api/user', router_user);
 
 app.get('/', (req, res) => {
     var html = fs.readFileSync(path.resolve(__dirname, './dist/index.html'), 'utf-8');

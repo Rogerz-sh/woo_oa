@@ -2,7 +2,7 @@
     <nav id="navBar" class="navbar is-info">
         <div class="navbar-brand">
             <img src="/images/logo.png" height="30" id="logo" />
-            <b>即沃OA管理系统</b>
+            <b style="opacity:0;">即沃OA管理系统</b>
         </div>
         <div class="navbar-menu">
             <div class="navbar-start">
