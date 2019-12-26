@@ -14,6 +14,11 @@ FavResume.init({
         allowNull: false,
         defaultValue: ''
     },
+    favoriteId: {
+        type: Sequelize.NUMBER,
+        allowNull: false,
+        defaultValue: ''
+    },
 }, {
     sequelize,
     modelName: 'fav_resume',

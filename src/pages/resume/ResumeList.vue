@@ -79,6 +79,7 @@
                 <div class="columns">
                     <div class="column">
                         <div class="button is-success" @click="addResume">添加简历</div>
+                        <div class="button is-primary margin-left-10" @click="addFav">添加收藏</div>
                     </div>
                 </div>
                 <div class="columns">
@@ -102,7 +103,7 @@
                                 <tr v-for="(r, idx) in resumes" :key="r.id">
                                     <td>
                                         <label class="checkbox">
-                                            <input type="checkbox" name id />
+                                            <input type="checkbox" name="resumeId" :value="r.id" v-model="selectedIds" />
                                         </label>
                                         {{r.id}}
                                     </td>
@@ -137,6 +138,7 @@
         </div>
         <resume-form :updatedAt.sync="timestamp"></resume-form>
         <record-list :resume="recordListResume"></record-list>
+        <fav-adder :is-hidden="!$store.state.showFavAdder"></fav-adder>
     </div>
 </template>
 
@@ -158,7 +160,9 @@ export default {
                 job: "",
                 experience: ""
             },
-            recordListResume: null
+            recordListResume: null,
+            selectedIds: [],
+            showAdder: true
         };
     },
     methods: {
@@ -211,6 +215,9 @@ export default {
             this.$store.commit("toggleRecordList", true);
             this.recordListResume = item;
             // item.age = 5;
+        },
+        addFav: function () {
+            this.$store.commit("toggleFavAdder", true);
         }
     },
     watch: {

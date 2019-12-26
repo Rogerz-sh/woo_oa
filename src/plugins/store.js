@@ -18,6 +18,7 @@ const store = new Vuex.Store({
         activeNavId: 1,
         activeMenuId: 0,
         activeFavId: 0,
+        selectedFavId: 0,
         navs: [],
         menus: [],
         user: {
@@ -26,6 +27,7 @@ const store = new Vuex.Store({
         },
         showResumeForm: false,
         showRecordList: false,
+        showFavAdder: false,
         formData: {
             location: location_data,
             job_type: [],
@@ -78,11 +80,17 @@ const store = new Vuex.Store({
         activeMenu(state, data) {
             state.activeMenuId = data.id;
         },
+        selectFavItem(state, data) {
+            state.selectedFavId = data;
+        },
         toggleResumeForm(state, flag) {
             state.showResumeForm = flag;
         },
         toggleRecordList(state, flag) {
             state.showRecordList = flag;
+        },
+        toggleFavAdder(state, flag) {
+            state.showFavAdder = flag;
         },
         loadJobType(state, data) {
             state.formData.job_type = data;

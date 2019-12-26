@@ -3,11 +3,15 @@ const router = express.Router();
 const Sequelize = require('sequelize');
 const tools = require('../utils');
 const path = require('path');
+const sequelize = require('../models/db');
+
 const User = require('../models/user')
 const Resume = require('../models/resume')
 const ResumeRecord = require('../models/resume_record')
 const ResumeWork = require('../models/resume_work')
 const ResumeEducation = require('../models/resume_education')
+// const Favorite = require('../models/favorite')
+// const FavResume = require('../models/fav_resume')
 
 router.get('/download', (req, res) => {
     let filepath = req.query.path, filename = req.query.name;
@@ -21,31 +25,37 @@ router.get('/download', (req, res) => {
 
 router.use(tools.auth.authenticate)
 
-router.get('/json-resume-list', (req, res) => {
-    let offset = +req.query.offset, limit = +req.query.limit, query = JSON.parse(req.query.query), where = {};
-    // query = JSON.parse(query);
-    if (query.realname) {
-        where['realname'] = { $like: `%${query.realname}%` }
-    }
-    if (query.sex) {
-        where['sex'] = { $eq: query.sex }
-    }
-    if (query.degree) {
-        where['degree'] = { $eq: query.degree }
-    }
-    if (query.company) {
-        where['company'] = { $like: `%${query.company}%` }
-    }
-    if (query.job) {
-        where['job'] = { $like: `%${query.job}%` }
-    }
-    Resume.findAndCountAll({
-        where: where, offset: offset, limit: limit
-    }).then(result => {
-        res.json(tools.handler.success(result));
-    }).catch(err => {
+router.get('/json-resume-list', async (req, res) => {
+    try {
+        let uid = req.get('oa-auth-uid'), offset = +req.query.offset, limit = +req.query.limit, query = JSON.parse(req.query.query), where = {};
+        // query = JSON.parse(query);
+        if (query.realname) {
+            where['realname'] = { $like: `%${query.realname}%` }
+        }
+        if (query.sex) {
+            where['sex'] = { $eq: query.sex }
+        }
+        if (query.degree) {
+            where['degree'] = { $eq: query.degree }
+        }
+        if (query.company) {
+            where['company'] = { $like: `%${query.company}%` }
+        }
+        if (query.job) {
+            where['job'] = { $like: `%${query.job}%` }
+        }
+        let result = await sequelize.query('SELECT *, (SELECT COUNT(id) FROM fav_resumes WHERE fav_resumes.resumeId = resumes.id AND fav_resumes.userId = :userId) AS count FROM resumes WHERE deletedAt is NULL LIMIT :offset,:limit',
+            { replacements: { userId: uid, offset, limit }, type: sequelize.QueryTypes.SELECT }
+        );
+        let count = await Resume.count({
+            where: where
+        })
+        res.json(tools.handler.success({ 'count': count, 'rows': result }));
+
+    } catch (err) {
         res.json(tools.handler.error(101, err));
-    })
+    }
+
 });
 
 router.get('/json-resume-works-and-edcations', (req, res) => {
@@ -129,7 +139,7 @@ router.post('/save-resume-by-chrome', (req, res) => {
 })
 
 async function saveResumeByChrome(req) {
-    let resume = typeof(req.body.resume) == 'string' ? JSON.parse(req.body.resume) : req.body.resume, works = resume.works, educations = resume.educations, result, id;
+    let resume = typeof (req.body.resume) == 'string' ? JSON.parse(req.body.resume) : req.body.resume, works = resume.works, educations = resume.educations, result, id;
     delete resume.id;
     delete resume.works;
     delete resume.educations;
