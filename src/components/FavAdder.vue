@@ -4,18 +4,18 @@
             <div id="menu" class="menu">
                 <ul class="menu-list">
                     <li>
-                        <label>
-                            <input type="radio" name="favId" @click="selectFavItem(0)" />
+                        <label class="fav-label">
+                            <input type="radio" name="favId" @click="selectFavItem(0)" checked />
                             <span>我的收藏</span>
                         </label>
                         <menu-list-selector :items="menus"></menu-list-selector>
                     </li>
                 </ul>
             </div>
-            <div class="columns">
+            <div class="columns margin-top-10">
                 <div class="column">
-                    <div class="button is-success">确定</div>
-                    <div class="button is-default margin-left-10" @click="$store.commit('toggleFavAdder', false)">取消</div>
+                    <button class="button is-small is-success" @click="saveFavResume">确定</button>
+                    <button class="button is-small is-default margin-left-10" @click="$store.commit('toggleFavAdder', false)">取消</button>
                 </div>
             </div>
         </div>
@@ -34,6 +34,12 @@ export default {
         },
         isHidden: {
             type: Boolean
+        },
+        selected: {
+            type: Array
+        },
+        updatedAt: {
+            type: Number
         }
     },
     computed: {
@@ -47,6 +53,20 @@ export default {
     methods: {
         selectFavItem: function(id) {
             this.$store.commit("selectFavItem", id);
+        },
+        saveFavResume: function() {
+            var self = this;
+            this.$http
+                .post("/api/resume/save-favorite-resume", {
+                    favId: self.$store.state.selectedFavId,
+                    resumeIds: self.selected
+                })
+                .then(res => {
+                    if (res.code == 200) {
+                        self.$emit("update:updatedAt", Date.now());
+                        self.$store.commit("toggleFavAdder", false);
+                    }
+                });
         }
     }
 };
@@ -70,6 +90,13 @@ export default {
     background: #fff;
     padding: 15px;
     border-radius: 5px;
+}
+#menu {
+    max-height: 300px;
+    overflow-y: scroll;
+}
+#menu label.fav-label {
+    font-size: 12px;
 }
 </style>
 

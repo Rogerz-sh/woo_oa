@@ -1,17 +1,20 @@
+/* eslint-disable no-unused-vars */
 const express = require('express');
 const router = express.Router();
 const Sequelize = require('sequelize');
 const tools = require('../utils');
 const path = require('path');
-const sequelize = require('../models/db');
 
-const User = require('../models/user')
-const Resume = require('../models/resume')
-const ResumeRecord = require('../models/resume_record')
-const ResumeWork = require('../models/resume_work')
-const ResumeEducation = require('../models/resume_education')
-// const Favorite = require('../models/favorite')
-// const FavResume = require('../models/fav_resume')
+const {
+    User,
+    Resume,
+    ResumeWork,
+    ResumeEducation,
+    ResumeRecord,
+    Favorite,
+    FavResume,
+    sequelize
+} = require('../models/all');
 
 router.get('/download', (req, res) => {
     let filepath = req.query.path, filename = req.query.name;
@@ -27,7 +30,7 @@ router.use(tools.auth.authenticate)
 
 router.get('/json-resume-list', async (req, res) => {
     try {
-        let uid = req.get('oa-auth-uid'), offset = +req.query.offset, limit = +req.query.limit, query = JSON.parse(req.query.query), where = {};
+        let uid = req.get('oa-auth-uid'), offset = +req.query.offset, limit = +req.query.limit, query = JSON.parse(req.query.query), where = {}, fids = [];
         // query = JSON.parse(query);
         if (query.realname) {
             where['realname'] = { $like: `%${query.realname}%` }
@@ -44,13 +47,26 @@ router.get('/json-resume-list', async (req, res) => {
         if (query.job) {
             where['job'] = { $like: `%${query.job}%` }
         }
-        let result = await sequelize.query('SELECT *, (SELECT COUNT(id) FROM fav_resumes WHERE fav_resumes.resumeId = resumes.id AND fav_resumes.userId = :userId) AS count FROM resumes WHERE deletedAt is NULL LIMIT :offset,:limit',
-            { replacements: { userId: uid, offset, limit }, type: sequelize.QueryTypes.SELECT }
-        );
-        let count = await Resume.count({
-            where: where
+        if (typeof (query.favId) == 'number') {
+            let favs = await FavResume.findAll({
+                where: {
+                    userId: uid,
+                    favoriteId: query.favId
+                }
+            });
+            let rids = favs.map(v => v.resumeId);
+            where['id'] = { $in: rids }
+        }
+        let result = await Resume.findAndCountAll({
+            attributes: [
+                'id', 'realname', 'sex', 'birthyear', 'province', 'city', 'mobile', 'email', 'company', 'job', 'experience', 'degree', 'filename', 'filepath',
+                [sequelize.literal("(select count(*) from fav_resumes where resume.id = fav_resumes.resumeId and userId = " + uid + ")"), 'favcount']
+            ],
+            where: where,
+            limit: limit,
+            offset: offset,
         })
-        res.json(tools.handler.success({ 'count': count, 'rows': result }));
+        res.json(tools.handler.success(result));
 
     } catch (err) {
         res.json(tools.handler.error(101, err));
@@ -129,6 +145,23 @@ async function saveResume(req) {
     }
     return id;
 }
+
+router.post('/save-favorite-resume', async (req, res) => {
+    try {
+        let uid = req.get('oa-auth-uid'), favId = req.body.favId, resumeIds = req.body.resumeIds, data = [];
+        resumeIds.forEach(v => {
+            data.push({
+                userId: uid,
+                resumeId: v,
+                favoriteId: favId
+            });
+        });
+        let result = await FavResume.bulkCreate(data);
+        res.json(tools.handler.success(result));
+    } catch (err) {
+        res.json(tools.handler.error(101, err));
+    }
+})
 
 router.post('/save-resume-by-chrome', (req, res) => {
     saveResumeByChrome(req).then(result => {

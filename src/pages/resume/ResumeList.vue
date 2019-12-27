@@ -78,8 +78,8 @@
 
                 <div class="columns">
                     <div class="column">
-                        <div class="button is-success" @click="addResume">添加简历</div>
-                        <div class="button is-primary margin-left-10" @click="addFav">添加收藏</div>
+                        <button class="button is-small is-success" @click="addResume">添加简历</button>
+                        <button class="button is-small is-primary margin-left-10" @click="addFav" :disabled="selectedIds.length==0">添加收藏</button>
                     </div>
                 </div>
                 <div class="columns">
@@ -87,7 +87,12 @@
                         <table class="table is-fullwidth is-striped is-hoverable">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>
+                                        <label class="checkbox">
+                                            <input type="checkbox" @change="selAll($event)" />
+                                            ID
+                                        </label>
+                                    </th>
                                     <th>姓名</th>
                                     <th>手机</th>
                                     <th>年龄</th>
@@ -103,9 +108,9 @@
                                 <tr v-for="(r, idx) in resumes" :key="r.id">
                                     <td>
                                         <label class="checkbox">
-                                            <input type="checkbox" name="resumeId" :value="r.id" v-model="selectedIds" />
+                                            <input type="checkbox" name="resumeId" :disabled="r.favcount > 0" :value="r.id" v-model="selectedIds" />
+                                            {{r.id}}
                                         </label>
-                                        {{r.id}}
                                     </td>
                                     <td>{{r.realname}}</td>
                                     <td>{{r.mobile}}</td>
@@ -138,7 +143,7 @@
         </div>
         <resume-form :updatedAt.sync="timestamp"></resume-form>
         <record-list :resume="recordListResume"></record-list>
-        <fav-adder :is-hidden="!$store.state.showFavAdder"></fav-adder>
+        <fav-adder :is-hidden="!$store.state.showFavAdder" :selected="selectedIds" :updatedAt.sync="timestamp"></fav-adder>
     </div>
 </template>
 
@@ -166,18 +171,31 @@ export default {
         };
     },
     methods: {
+        selAll: function(e) {
+            var self = this;
+            if (!e.target.checked) {
+                self.$set(self, "selectedIds", []);
+            } else {
+                var ids = [];
+                self.resumes.forEach(v => {
+                    if (v.favcount == 0) ids.push(v.id);
+                });
+                self.$set(self, "selectedIds", ids);
+            }
+        },
         getResumeData: function() {
             this.$http
                 .get("/api/resume/json-resume-list", {
                     params: {
                         offset: (this.page - 1) * this.size,
                         limit: this.size,
-                        query: this.search
+                        query: Object.assign({ favId: this.favId }, this.search)
                     }
                 })
                 .then(res => {
                     this.resumes = res.results.rows;
                     this.total = res.results.count;
+                    this.$set(this, "selectedIds", []);
                 });
         },
         searchResume: function() {
@@ -216,7 +234,7 @@ export default {
             this.recordListResume = item;
             // item.age = 5;
         },
-        addFav: function () {
+        addFav: function() {
             this.$store.commit("toggleFavAdder", true);
         }
     },
@@ -226,11 +244,17 @@ export default {
         },
         page: function() {
             this.getResumeData();
+        },
+        favId: function() {
+            this.getResumeData();
         }
     },
     computed: {
         degrees: function() {
             return this.$store.state.formData.degree;
+        },
+        favId: function() {
+            return this.$store.state.activeFavId;
         }
     },
     mounted: function() {

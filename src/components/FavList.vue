@@ -3,7 +3,7 @@
         <p class="menu-label">常规分类</p>
         <ul class="menu-list">
             <li>
-                <a :class="{'is-active': $store.state.activeFavId == 0}">人才库</a>
+                <a :class="{'is-active': $store.state.activeFavId == 'all'}" @click="$store.commit('activeFav', 'all')">人才库</a>
             </li>
         </ul>
         <p class="menu-label">

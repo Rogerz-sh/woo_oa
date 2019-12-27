@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
+const Sequelize = require('sequelize');
 const {
     User,
     Resume,
@@ -7,18 +8,21 @@ const {
     ResumeEducation,
     ResumeRecord,
     Favorite,
-    FavResume
+    FavResume,
+    sequelize
 } = require('../models/all');
 
 async function testQuery() {
-    return await Resume.findAll({
-        include: [
-            { model: User, as: 'creator' },
-            { model: ResumeWork, as: 'works' },
-            { model: ResumeEducation, as: 'educations' },
-            { model: ResumeRecord, as: 'records' },
+    let result = await Resume.findAndCountAll({
+        attributes: [
+            'id', 'realname',
+            [
+                sequelize.literal("(select count(*) from fav_resumes where resume.id = fav_resumes.resumeId and userId = 1)"),
+                'favcount'
+            ]
         ]
-    })
+    });
+    return result;
 }
 
 async function testSave() {
@@ -29,14 +33,14 @@ async function testSave() {
     })
 }
 
-testSave().then(result => {
-    console.log(result)
-}).catch(err => {
-    console.log(err);
-})
-
-// testQuery().then(result => {
+// testSave().then(result => {
 //     console.log(result)
 // }).catch(err => {
 //     console.log(err);
 // })
+
+testQuery().then(result => {
+    console.log(result)
+}).catch(err => {
+    console.log(err);
+})

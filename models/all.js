@@ -311,12 +311,14 @@ ResumeRecord.belongsTo(User, {
 
 Resume.belongsToMany(Favorite, {
   through: FavResume,
-  foreignKey: 'resumeId'
+  foreignKey: 'resumeId',
+  as: 'favorites'
 })
 
 Favorite.belongsToMany(Resume, {
   through: FavResume,
-  foreignKey: 'favoriteId'
+  foreignKey: 'favoriteId',
+  as: 'resumes'
 })
 
 // User.belongsToMany(Favorite, {

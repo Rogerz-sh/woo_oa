@@ -2,7 +2,7 @@
     <ul class="menu-list">
         <li v-for="item in items" :key="item.id">
             <a>
-                <label><input type="radio" name="favId" @click="selectFavItem(item.id)"><span v-text="item.name"></span></label>
+                <label class="fav-label"><input type="radio" name="favId" @click="selectFavItem(item.id)"><span v-text="item.name"></span></label>
             </a>
             <menu-list-selector :items="item.items" v-if="item.items.length > 0"></menu-list-selector>
         </li>
@@ -35,12 +35,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#menu {
-    padding: 10px 0 50px 0;
-}
-#menu .menu-label {
-    color: #333;
-}
 a {
     color: #333;
 }
@@ -50,6 +44,9 @@ i {
 .fav-item {
     width: 100%;
     margin: 0;
+}
+.fav-label {
+    font-size: 12px;
 }
 .menu-list li ul {
     margin-right: 0;

@@ -17,7 +17,7 @@ const store = new Vuex.Store({
     state: {
         activeNavId: 1,
         activeMenuId: 0,
-        activeFavId: 0,
+        activeFavId: 'all',
         selectedFavId: 0,
         navs: [],
         menus: [],
@@ -80,8 +80,11 @@ const store = new Vuex.Store({
         activeMenu(state, data) {
             state.activeMenuId = data.id;
         },
+        activeFav(state, data) {
+            state.activeFavId = data;
+        },
         selectFavItem(state, data) {
-            state.selectedFavId = data;
+            state.selectedFavId = data.id;
         },
         toggleResumeForm(state, flag) {
             state.showResumeForm = flag;
