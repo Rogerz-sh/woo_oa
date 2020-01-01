@@ -84,7 +84,7 @@ const store = new Vuex.Store({
             state.activeFavId = data;
         },
         selectFavItem(state, data) {
-            state.selectedFavId = data.id;
+            state.selectedFavId = data;
         },
         toggleResumeForm(state, flag) {
             state.showResumeForm = flag;

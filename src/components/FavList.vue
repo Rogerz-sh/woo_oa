@@ -3,7 +3,7 @@
         <p class="menu-label">常规分类</p>
         <ul class="menu-list">
             <li>
-                <a :class="{'is-active': $store.state.activeFavId == 'all'}" @click="$store.commit('activeFav', 'all')">人才库</a>
+                <router-link to="/resume-list" :class="{'is-active': $store.state.activeFavId == 'all'}">人才库</router-link>
             </li>
         </ul>
         <p class="menu-label">
@@ -56,6 +56,7 @@ export default {
     },
     mounted: function() {
         var self = this;
+        this.$store.commit('activeFav', 'all')
         self.$http.get("/api/user/json-favorite-list").then(res => {
             var fav = [], items = {'0': []};
             res.results.sort((a, b) => {

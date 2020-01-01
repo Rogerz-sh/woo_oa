@@ -76,7 +76,7 @@ export default {
                             sessionStorage.setItem("user", data.user);
                             sessionStorage.setItem("token", data.token);
                             self.$store.commit('loadUser', data.user);
-                            self.$router.push("/page/dashboard");
+                            self.$router.push("/dashboard");
                         } else {
                             self.error = res.msg;
                         }

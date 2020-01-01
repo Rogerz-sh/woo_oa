@@ -2,7 +2,7 @@
     <ul class="menu-list">
         <li v-for="(item, idx) in items" :key="item.id">
             <a v-show="!item.editable" :class="{'is-active': $store.state.activeFavId == item.id}">
-                <span v-text="item.name" @click="selFavItem(item)"></span>
+                <router-link :to="'/resume-favorites/'+item.id"><span v-text="item.name" @click="selFavItem(item)"></span></router-link>
                 <span class="is-pulled-right" v-show="editable">
                     <i class="fa fa-minus has-text-danger margin-left-5" @click="delFavItem(idx, item)" v-if="item.items.length == 0"></i>
                     <i class="fa fa-plus has-text-success margin-left-5" @click="addFavItem(item)" v-if="item.depth < 3"></i>

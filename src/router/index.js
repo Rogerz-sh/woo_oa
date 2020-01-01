@@ -5,7 +5,7 @@ import Main from '../pages/Main.vue'
 import Dashboard from '../pages/Dashboard.vue'
 // import Resume from '../pages/Resume.vue'
 import ResumeList from '../pages/resume/ResumeList.vue'
-import ResumeDetail from '../pages/resume/ResumeDetail.vue'
+import ResumeFavorites from '../pages/resume/ResumeFavorites.vue'
 
 const routes = [
     { path: '/', component: Login },
@@ -13,16 +13,17 @@ const routes = [
         path: '/page', component: Main,
         children: [
             { 
-                path: 'dashboard', 
+                path: '/dashboard', 
                 component: Dashboard 
             },
             {
-                path: 'resume-list',
+                path: '/resume-list',
                 component: ResumeList
             },
             {
-                path: 'resume-detail',
-                component: ResumeDetail
+                path: '/resume-favorites/:fid',
+                component: ResumeFavorites,
+                props: true
             }
         ]
     },

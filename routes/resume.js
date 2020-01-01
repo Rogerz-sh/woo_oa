@@ -74,6 +74,48 @@ router.get('/json-resume-list', async (req, res) => {
 
 });
 
+router.get('/json-resume-favorites', async (req, res) => {
+    try {
+        let uid = req.get('oa-auth-uid'), offset = +req.query.offset, limit = +req.query.limit, query = JSON.parse(req.query.query), where = {}, fids = [];
+        // query = JSON.parse(query);
+        if (query.realname) {
+            where['realname'] = { $like: `%${query.realname}%` }
+        }
+        if (query.sex) {
+            where['sex'] = { $eq: query.sex }
+        }
+        if (query.degree) {
+            where['degree'] = { $eq: query.degree }
+        }
+        if (query.company) {
+            where['company'] = { $like: `%${query.company}%` }
+        }
+        if (query.job) {
+            where['job'] = { $like: `%${query.job}%` }
+        }
+        if (typeof (query.favId) == 'number') {
+            let favs = await FavResume.findAll({
+                where: {
+                    userId: uid,
+                    favoriteId: query.favId
+                }
+            });
+            let rids = favs.map(v => v.resumeId);
+            where['id'] = { $in: rids }
+        }
+        let result = await Resume.findAndCountAll({
+            where: where,
+            limit: limit,
+            offset: offset,
+        })
+        res.json(tools.handler.success(result));
+
+    } catch (err) {
+        res.json(tools.handler.error(101, err));
+    }
+
+});
+
 router.get('/json-resume-works-and-edcations', (req, res) => {
     let resumeId = req.query.resumeId;
     getWorksAndEducations(resumeId).then(result => {
@@ -149,6 +191,13 @@ async function saveResume(req) {
 router.post('/save-favorite-resume', async (req, res) => {
     try {
         let uid = req.get('oa-auth-uid'), favId = req.body.favId, resumeIds = req.body.resumeIds, data = [];
+        await FavResume.destroy({
+            where: {
+                resumeId: { $in: resumeIds },
+                // favoriteId: favId,
+                userId: uid
+            }
+        });
         resumeIds.forEach(v => {
             data.push({
                 userId: uid,
@@ -219,6 +268,20 @@ router.post('/remove-resume', (req, res) => {
     Resume.destroy({
         where: {
             id: resumeId
+        }
+    }).then(result => {
+        res.json(tools.handler.success(result));
+    }).catch(err => {
+        res.json(tools.handler.error(101, err));
+    });
+})
+
+router.post('/remove-resume-favorite', (req, res) => {
+    let resumeId = req.body.resumeId, favId = req.body.favId;
+    FavResume.destroy({
+        where: {
+            resumeId: resumeId,
+            favoriteId: favId
         }
     }).then(result => {
         res.json(tools.handler.success(result));

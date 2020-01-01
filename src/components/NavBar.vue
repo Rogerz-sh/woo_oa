@@ -2,15 +2,15 @@
     <nav id="navBar" class="navbar is-info">
         <div class="navbar-brand">
             <img src="/images/logo.png" height="30" id="logo" />
-            <b style="opacity:0;">即沃OA管理系统</b>
+            <b>即沃OA管理系统</b>
         </div>
         <div class="navbar-menu">
             <div class="navbar-start">
-                <router-link to="/page/dashboard" class="navbar-item is-spaced">首页</router-link>
+                <router-link to="/dashboard" class="navbar-item is-spaced">首页</router-link>
                 <div class="navbar-item has-dropdown is-hoverable is-spaced">
                     <a class="navbar-link">招聘管理</a>
                     <div class="navbar-dropdown">
-                        <router-link to="/page/resume-list" class="navbar-item">人才库</router-link>
+                        <router-link to="/resume-list" class="navbar-item">人才库</router-link>
                     </div>
                 </div>
             </div>
@@ -20,7 +20,7 @@
                     <div class="navbar-item has-dropdown is-hoverable is-spaced">
                         <a class="navbar-link" v-text="$store.state.user.nickname"></a>
                         <div class="navbar-dropdown">
-                            <router-link to="/page/user-profile" class="navbar-item">个人设置</router-link>
+                            <router-link to="/user-profile" class="navbar-item">个人设置</router-link>
                             <a class="navbar-item" @click="logoutSystem">退出系统</a>
                         </div>
                     </div>
